@@ -7,6 +7,7 @@
 import re
 import operator
 import math
+import os
 
 debug = False
 test = True
@@ -105,13 +106,11 @@ def generateCandidateKeywordScores(phraseList, wordscore):
 		keywordcandidates[phrase] = candidatescore
 	return keywordcandidates
 
-if test:
-	text = "Compatibility of systems of linear constraints over the set of natural numbers. Criteria of compatibility of a system of linear Diophantine equations, strict inequations, and nonstrict inequations are considered. Upper bounds for components of a minimal set of solutions and algorithms of construction of minimal generating sets of solutions for all types of systems are given. These criteria and the corresponding algorithms for constructing a minimal supporting set of solutions can be used in solving all the considered types of systems and systems of mixed types."
-
-	# Split text into sentences
+def rake(text):
 	sentenceList = splitSentences(text)
 	#stoppath = "FoxStoplist.txt" #Fox stoplist contains "numbers", so it will not find "natural numbers" like in Table 1.1
-	stoppath = "SmartStoplist.txt" #SMART stoplist misses some of the lower-scoring keywords in Figure 1.5, which means that the top 1/3 cuts off one of the 4.0 score words in Table 1.1
+	stoppath = os.path.join(os.path.dirname(__file__), "SmartStoplist.txt")
+
 	stopwordpattern = buildStopwordRegExPattern(stoppath)
 
 	# generate candidate keywords
@@ -130,3 +129,8 @@ if test:
 	totalKeywords = len(sortedKeywords)
 	if debug: print totalKeywords
 	print sortedKeywords[0:(totalKeywords/3)]
+	return  sortedKeywords
+
+if test:
+	text = "Compatibility of systems of linear constraints over the set of natural numbers. Criteria of compatibility of a system of linear Diophantine equations, strict inequations, and nonstrict inequations are considered. Upper bounds for components of a minimal set of solutions and algorithms of construction of minimal generating sets of solutions for all types of systems are given. These criteria and the corresponding algorithms for constructing a minimal supporting set of solutions can be used in solving all the considered types of systems and systems of mixed types."
+	rake(text)
