@@ -1,1 +1,1 @@
-import('pkg_resources').declare_namesapce(rake)
+__import__('pkg_resources').declare_namespace('rake')
